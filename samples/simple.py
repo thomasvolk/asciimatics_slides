@@ -1,6 +1,6 @@
 from asciimatics.effects import Print
 from asciimatics.screen import Screen
-from asciimatics_slides.scene import SlideScene, slide_scenes
+from asciimatics_slides.scene import SlideScene, SlideSceneContext
 from asciimatics.renderers import SpeechBubble, FigletText, Box
 from asciimatics.exceptions import ResizeScreenError
 import sys
@@ -13,18 +13,19 @@ def _speak(screen, text, pos):
         colour=Screen.COLOUR_CYAN,
         clear=True)
 
-def _slide(screen, text):
+def _slide(context, screen, text):
     centre = (screen.width // 2, screen.height // 2)
-    return SlideScene([_speak(screen, text, centre)])
+    return SlideScene(context, [_speak(screen, text, centre)])
 
 def _simple(screen):
-    scenes = slide_scenes(
-      _slide(screen, "Slide 1"),
-      _slide(screen, "Slide 2"),
-      _slide(screen, "Slide 3"),
-      _slide(screen, "Slide 4"),
-      _slide(screen, "Slide 5")
-    )
+    context = SlideSceneContext()
+    scenes = [
+      _slide(context, screen, "Slide 1"),
+      _slide(context, screen, "Slide 2"),
+      _slide(context, screen, "Slide 3"),
+      _slide(context, screen, "Slide 4"),
+      _slide(context, screen, "Slide 5")
+    ]
 
     screen.play(scenes, stop_on_resize=True)
 

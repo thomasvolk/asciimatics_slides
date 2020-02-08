@@ -13,12 +13,22 @@ def slide_scenes(*scenes):
         current = s
     return scenes
 
+class SlideSceneContext(object):
+    def __init__(self):
+        self._scenes = []
+    def add_scene(self, scene):
+        if len(self._scenes) > 0:
+            last = self._scenes[-1]
+            last.add_next(scene)
+        self._scenes.append(scene)
+
 class SlideScene(Scene):
-    def __init__(self, effects, duration=0, clear=True, name=None):
+    def __init__(self, context, effects, duration=0, clear=True, name=None):
         if not name:
             name = str(uuid.uuid4())
         self._predecessor = None
         self._successor = None
+        context.add_scene(self)
         super(SlideScene, self).__init__(effects, duration=duration, clear=clear, name=name)
     
     def add_next(self, successor):
