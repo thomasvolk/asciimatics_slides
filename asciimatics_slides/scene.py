@@ -4,15 +4,6 @@ from asciimatics.exceptions import NextScene
 from asciimatics.event import KeyboardEvent, MouseEvent
 import uuid
 
-def slide_scenes(*scenes):
-    if len(scenes) == 0:
-        return []
-    current = scenes[0]
-    for s in scenes[1:]:
-        current.add_next(s)
-        current = s
-    return scenes
-
 class SlideSceneContext(object):
     def __init__(self):
         self._scenes = []
