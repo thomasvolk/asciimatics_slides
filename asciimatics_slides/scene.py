@@ -4,20 +4,15 @@ from asciimatics.exceptions import NextScene
 from asciimatics.event import KeyboardEvent, MouseEvent
 import uuid
 
-class SlideSceneGenerator(object):
-    def __init__(self, scene):
-        self._scene = scene    
-        
-    def __iter__(self):
-        return self
+def slide_scenes(*scenes):
+    if len(scenes) == 0:
+        return []
+    current = scenes[0]
+    for s in scenes[1:]:
+        current.add_next(s)
+        current = s
+    return scenes
 
-    def __next__(self):
-        if not self._scene:
-            raise StopIteration
-        current_scene = self._scene
-        self._scene = self._scene.successor
-        return current_scene
-            
 class SlideScene(Scene):
     def __init__(self, effects, duration=0, clear=True, name=None):
         if not name:
@@ -53,12 +48,6 @@ class SlideScene(Scene):
             if event.buttons == MouseEvent.RIGHT_CLICK:
                 self._backward()         
         return super().process_event(event)
-
-    def root(self):
-        scene = self
-        while scene._predecessor:
-            scene = scene._predecessor
-        return scene
     
     @property
     def predecessor(self):
