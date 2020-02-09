@@ -1,38 +1,44 @@
+import sys
 from asciimatics.effects import Print
 from asciimatics.screen import Screen
-from asciimatics_slides.scene import SlideScene, SlideSceneContext
-from asciimatics.renderers import SpeechBubble, FigletText, Box
+from asciimatics.renderers import FigletText
 from asciimatics.exceptions import ResizeScreenError
-import sys
+from asciimatics_slides.scene import SlideScene, SlideSceneContext
 
-def _speak(screen, text, pos):
-    return Print(
-        screen,
-        SpeechBubble(text, uni=screen.unicode_aware),
-        x=pos[0], y=pos[1],
-        colour=Screen.COLOUR_CYAN,
-        clear=True)
-
-def _slide(context, screen, text):
-    centre = (screen.width // 2, screen.height // 2)
-    return SlideScene(context, [_speak(screen, text, centre)])
-
-def _simple(screen):
+def demo(screen):
     context = SlideSceneContext()
     scenes = [
-      _slide(context, screen, "Slide 1"),
-      _slide(context, screen, "Slide 2"),
-      _slide(context, screen, "Slide 3"),
-      _slide(context, screen, "Slide 4"),
-      _slide(context, screen, "Slide 5")
+        SlideScene(context, [
+            Print(screen, 
+                    FigletText("Slide 1", font='big'),
+                    int(screen.height / 2 - 15))]),
+        SlideScene(context, [
+            Print(screen, 
+                    FigletText("Slide 2", font='big'),
+                    int(screen.height / 2 - 12))]),
+        SlideScene(context, [
+            Print(screen, 
+                    FigletText("Slide 3", font='big'),
+                    int(screen.height / 2 - 9))]),
+        SlideScene(context, [
+            Print(screen, 
+                    FigletText("Slide 4", font='big'),
+                    int(screen.height / 2 - 6))]),
+        SlideScene(context, [
+            Print(screen, 
+                    FigletText("Slide 5", font='big'),
+                    int(screen.height / 2 - 3))]),
+        SlideScene(context, [
+            Print(screen, 
+                    FigletText("Slide 6", font='big'),
+                    int(screen.height / 2 - 0))]),
     ]
-
-    screen.play(scenes, stop_on_resize=True)
+    screen.play(scenes)
 
 if __name__ == "__main__":
     while True:
         try:
-            Screen.wrapper(_simple)
+            Screen.wrapper(demo)
             sys.exit(0)
         except ResizeScreenError:
             pass
