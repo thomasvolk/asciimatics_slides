@@ -38,3 +38,4 @@ Use SlideScene and SlideSceneContext to create your scenes:
 
     Screen.wrapper(demo)
 
+see: https://github.com/thomasvolk/asciimatics_slides/tree/master/samples
